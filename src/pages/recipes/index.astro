@@ -1,0 +1,387 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+
+const recipes = (await getCollection('recipes')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={`${SITE_TITLE} | Recipes`} description={SITE_DESCRIPTION} />
+    <style>
+      main {
+        width: 90%;
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+
+      .page-title {
+        margin: 0 0 0.5rem 0;
+        font-size: 2rem;
+        line-height: 1.1;
+      }
+
+      .page-subtitle {
+        margin: 0 0 1.5rem 0;
+        opacity: 0.8;
+      }
+
+      .search-wrap {
+        top: 0;
+        z-index: 5;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        margin-bottom: 1.25rem;
+      }
+
+      .search-row {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+      }
+
+      .search {
+        width: 70%;
+        font: inherit;
+        padding: 0.85rem 1rem;
+        border-radius: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        outline: none;
+      }
+
+      .sort-select {
+        width: 30%;
+        font: inherit;
+        padding: 1rem 1rem;
+        border-radius: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        outline: none;
+      }
+
+      .search:focus {
+        border-color: rgba(0, 0, 0, 0.28);
+        box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.06);
+      }
+
+      .meta-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 1rem;
+        margin-top: 0.6rem;
+      }
+
+      .results-count {
+        margin: 0;
+        color: rgb(var(--gray));
+        font-size: 0.95rem;
+      }
+
+      .clear-btn {
+        display: none;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        background: transparent;
+        border-radius: 10px;
+        padding: 0.55rem 0.8rem;
+        cursor: pointer;
+        font: inherit;
+      }
+
+      .clear-btn:hover {
+        border-color: rgba(0, 0, 0, 0.28);
+      }
+
+      ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        width: calc(50% - 1rem);
+      }
+
+      a.card {
+        display: block;
+        text-decoration: none;
+        transition: 0.2s ease;
+      }
+
+      .thumb {
+        width: 100%;
+        margin-bottom: 0.75rem;
+        aspect-ratio: 4 / 3;
+        border-radius: 14px;
+        overflow: hidden;
+      }
+
+      .thumb :global(img) {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+      }
+
+      .title {
+        margin: 0;
+        color: rgb(var(--black));
+        line-height: 1.1;
+        font-size: 1.15rem;
+      }
+      
+      .card-info {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-top: 0.35rem;
+      }
+
+      .date {
+        margin: 0.35rem 0 0 0;
+        color: rgb(var(--gray));
+      }
+
+      .times-made {
+        margin: 0.35rem 0 0 0;
+        color: rgb(var(--gray));
+      }
+
+      a.card:hover .title,
+      a.card:hover .date {
+        color: rgb(var(--accent));
+      }
+
+      a.card:hover .thumb {
+        box-shadow: var(--box-shadow);
+      }
+
+      .empty {
+        margin: 2rem 0 0 0;
+        color: rgb(var(--gray));
+      }
+
+      @media (max-width: 720px) {
+        ul {
+          gap: 1rem;
+        }
+        li {
+          width: 100%;
+        }
+        .page-title {
+          font-size: 1.6rem;
+        }
+        .search-row {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .search,
+        .sort-select {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <Header />
+
+    <main>
+      <h1 class="page-title">Recipe Book</h1>
+      <p class="page-subtitle">
+      A personal recipe book for dishes I cook frequently and want to make again.
+      Each recipe includes links to the original source if there is one, any modifications I've made,
+      and notes on what worked, what didn't, and what I'd change next time.
+      <br/>
+      This is primarily a personal reference as I used to forget modifications I came up with to preexisting recipes
+      and I wanted to properly save them. You'll also find dishes with missing recipes that I'm hoping
+      to upload once I get them right.
+      <br/>
+      Measurements are NOT exact and will often be more of a general guideline (generally based on US products).
+      <br/>
+      Use the search bar to filter by title or tags
+      (e.g. “asian”, “dinner”, “dessert”, “quick”).
+    </p>
+
+      <div class="search-wrap">
+        <div class="search-row">
+          <input
+            id="recipeSearch"
+            class="search"
+            type="search"
+            placeholder="Search recipes (title or tags)…"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button id="clearBtn" class="clear-btn" type="button">Clear</button>
+          <select id="sortSelect" class="sort-select">
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+            <option value="title-asc">Title (A-Z)</option>
+            <option value="most-made">Most Made</option>
+          </select>
+        </div>
+        <div class="meta-row">
+          <p id="resultsCount" class="results-count">{recipes.length} recipes</p>
+        </div>
+      </div>
+
+      <section aria-label="Recipe list">
+        <ul id="recipeList">
+          {
+            recipes.map((post) => (
+              <li
+                class="recipe-item"
+                data-title={post.data.title ?? ''}
+                data-tags={(post.data.tags ?? []).join(' ')}
+                data-pubdate={post.data.pubDate?.valueOf() ?? 0}
+                data-timesmade={post.data.timesMade ?? 0}
+              >
+                <a class="card" href={`/recipes/${post.id}/`}>
+                  {post.data.heroImage && (
+                    <div class="thumb">
+                      <Image width={720} height={360} src={post.data.heroImage} alt="" />
+                    </div>
+                  )}
+                  <h2 class="title">{post.data.title}</h2>
+                  <div class="card-info">
+                    <p class="date">
+                      <FormattedDate date={post.data.pubDate} />
+                    </p> 
+                    <p class="times-made">
+                      {post.data.timesMade
+                        ? `${post.data.timesMade} made`
+                        : 'Not made yet'}
+                    </p>
+                  </div>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <p id="emptyState" class="empty" style="display:none;">
+          No recipes match your search.
+        </p>
+      </section>
+
+      <script>
+        // @ts-nocheck
+        // grab DOM elements and guard against nulls
+        const input = document.getElementById('recipeSearch');
+        const sort = document.getElementById('sortSelect');
+        const list = document.getElementById('recipeList');
+        const count = document.getElementById('resultsCount');
+        const empty = document.getElementById('emptyState');
+        const clearBtn = document.getElementById('clearBtn');
+
+        function normalize(s: string | null | undefined) {
+          return (s || '').toLowerCase().trim();
+        }
+
+        function getAllItems(): HTMLLIElement[] {
+          if (!list) return [];
+          return Array.from(list.querySelectorAll<HTMLLIElement>('.recipe-item'));
+        }
+
+        function matchesQuery(li: HTMLLIElement, query: string): boolean {
+          const q = normalize(query);
+          if (!q) return true;
+
+          const haystack = normalize(
+            [li.dataset.title, li.dataset.tags].join(' ')
+          );
+          return haystack.includes(q);
+        }
+
+        function sortItems(items: HTMLLIElement[], sortType: string): HTMLLIElement[] {
+          const type = sortType || 'newest';
+
+          if (type === 'newest') {
+            items.sort(
+              (a, b) => Number(b.dataset.pubdate) - Number(a.dataset.pubdate)
+            );
+          } else if (type === 'oldest') {
+            items.sort(
+              (a, b) => Number(a.dataset.pubdate) - Number(b.dataset.pubdate)
+            );
+          } else if (type === 'title-asc') {
+            items.sort((a, b) =>
+              normalize(a.dataset.title).localeCompare(normalize(b.dataset.title))
+            );
+          } else if (type === 'most-made') {
+            // Requires frontmatter field like: timesMade: 5
+            items.sort(
+              (a, b) => Number(b.dataset.timesMade) - Number(a.dataset.timesMade)
+            );
+          }
+
+          return items;
+        }
+
+        function render(items: HTMLLIElement[]) {
+          if (!list) return;
+          // reorder DOM to match sort
+          const frag = document.createDocumentFragment();
+          items.forEach((li) => frag.appendChild(li));
+          list.appendChild(frag);
+        }
+
+        function applyFilterAndSort() {
+          if (!input || !sort || !list || !count || !empty || !clearBtn) return;
+
+          const query = input.value || '';
+          const sortType = sort.value;
+          
+          const items = getAllItems();
+
+          // Sort first (so the visible subset keeps correct order)
+          sortItems(items, sortType);
+          render(items);
+
+          // Then filter visibility
+          let visible = 0;
+          items.forEach((li) => {
+            const show = matchesQuery(li, query);
+            li.style.display = show ? '' : 'none';
+            if (show) visible += 1;
+          });
+
+          const q = normalize(query);
+          count.textContent = q
+            ? `${visible} recipe${visible === 1 ? '' : 's'} matching “${query}”`
+            : `${items.length} recipe${items.length === 1 ? '' : 's'}`;
+
+          empty.style.display = visible === 0 ? '' : 'none';
+          clearBtn.style.display = q ? 'inline-block' : 'none';
+        }
+
+        input?.addEventListener('input', applyFilterAndSort);
+        sort?.addEventListener('change', applyFilterAndSort);
+
+        clearBtn?.addEventListener('click', () => {
+          if (!input) return;
+          input.value = '';
+          input.focus();
+          applyFilterAndSort();
+        });
+
+        // initial
+        applyFilterAndSort();
+      </script>
+    </main>
+
+    <Footer />
+  </body>
+</html>

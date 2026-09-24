@@ -1,0 +1,117 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+
+const posts = (await getCollection('projects')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			main {
+				width: 960px;
+			}
+			ul {
+				display: grid;
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+				gap: 1.25rem;
+				list-style-type: none;
+				margin: 0;
+				padding: 0;
+			}
+			ul li {
+				aspect-ratio: 4 / 3;
+			}
+			ul li a {
+				position: relative;
+				display: block;
+				height: 100%;
+				overflow: hidden;
+				border-radius: 12px;
+				color: inherit;
+				text-decoration: none;
+				box-shadow: var(--box-shadow);
+				transition: transform 0.2s ease, box-shadow 0.2s ease;
+			}
+			ul li img {
+				display: block;
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				border-radius: 0;
+			}
+			.header {
+				position: absolute;
+				inset: auto 0 0;
+				display: flex;
+				flex-direction: column;
+				gap: 0.2rem;
+				padding: 4rem 1rem 1rem;
+				color: white;
+				background: linear-gradient(transparent, rgba(15, 18, 25, 0.9));
+			}
+			.title {
+				margin: 0;
+				color: white;
+				line-height: 1;
+				font-size: clamp(1rem, 2vw, 1.25rem);
+			}
+			.description {
+				margin: 0;
+				color: rgba(255, 255, 255, 0.82);
+			}
+			ul li a:hover {
+				transform: translateY(-3px);
+				box-shadow: 0 8px 24px rgba(var(--gray), 33%);
+			}
+			@media (max-width: 720px) {
+				ul {
+					grid-template-columns: 1fr;
+					gap: 1rem;
+				}
+				.header {
+					padding: 3rem 0.75rem 0.75rem;
+				}
+				.title {
+					font-size: 1rem;
+				}
+				.description {
+					font-size: 0.8rem;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section>
+				<ul>
+					{
+						posts.map((post) => (
+							<li>
+								<a href={`/projects/${post.id}/`}>
+									{post.data.heroImage && (
+											<Image width={640} height={480} src={post.data.heroImage} alt="" />
+									)}
+									<div class="header">
+										<h4 class="title">{post.data.title}</h4>
+										<p class="description">{post.data.description}</p>
+									</div>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>

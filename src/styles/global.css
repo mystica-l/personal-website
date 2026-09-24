@@ -105,6 +105,23 @@ img {
 	height: auto;
 	border-radius: 8px;
 }
+.image-row {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+.image-row figure {
+	flex: 1 1 300px;
+	max-width: 400px;
+	margin: 0;
+}
+.image-row img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
 code {
 	padding: 2px 5px;
 	background-color: rgb(var(--gray-light));

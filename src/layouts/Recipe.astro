@@ -1,0 +1,208 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+
+type Props = CollectionEntry<'recipes'>['data'];
+
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  heroImage,
+
+  // top-level fields
+  timesMade = 0,
+  time,
+  servings,
+  tags = [],
+} = Astro.props as Props;
+
+const metaPairs: Array<[string, string | number | undefined]> = [
+  ['Time', time],
+  ['Servings', servings],
+];
+
+const normalizedTags = Array.isArray(tags)
+  ? tags.filter((t) => typeof t === 'string' && t.trim().length > 0)
+  : [];
+---
+
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+    <style>
+      main {
+        width: calc(100% - 2em);
+        max-width: 100%;
+        margin: 0;
+      }
+
+      .prose {
+        max-width: calc(100% - 3em);
+        margin: auto;
+        color: rgb(var(--gray-dark));
+      }
+
+      .recipe-header {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+        align-items: center;
+        margin: 1rem 0 1.25rem 0;
+      }
+
+      @media (min-width: 860px) {
+        .recipe-header {
+          grid-template-columns: 1.1fr 0.9fr;
+          gap: 2rem;
+        }
+      }
+
+      .recipe-image :global(img) {
+        display: block;
+        width: 90%;
+        height: auto;
+        border-radius: 12px;
+        box-shadow: var(--box-shadow);
+        object-fit: cover;
+      }
+
+      .recipe-details {
+        padding: 0.25rem 0;
+      }
+
+      .recipe-title {
+        margin: 0 0 0.5rem 0;
+        line-height: 1.1;
+        text-align: left;
+      }
+
+      .date {
+        margin-bottom: 0.25rem;
+        color: rgb(var(--gray));
+      }
+
+      .last-updated-on {
+        font-style: italic;
+        margin-top: 0.25rem;
+      }
+
+      /* Summary row: times made + meta pairs */
+      .summary-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem 0.75rem;
+        margin: 0.75rem 0 0.75rem 0;
+        align-items: center;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.4rem;
+        padding: 0.5rem 0.7rem;
+        border-radius: 999px;
+        border: 1px solid rgba(var(--gray), 0.2);
+        background: rgba(var(--gray), 0.06);
+        color: rgb(var(--gray-dark));
+        line-height: 1;
+        white-space: nowrap;
+      }
+
+      .pill-muted {
+        color: rgb(var(--gray));
+      }
+
+      .meta-label {
+        font-weight: 600;
+      }
+
+      /* Tags */
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+        margin: 0 0 0.9rem 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .tag {
+        padding: 0.4rem 0.6rem;
+        border-radius: 999px;
+        background: rgba(var(--gray), 0.08);
+        border: 1px solid rgba(var(--gray), 0.18);
+        font-size: 0.9rem;
+        color: rgb(var(--gray-dark));
+      }
+
+      .divider {
+        margin: 1rem 0 1.25rem 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <Header />
+    <main>
+      <article>
+        <div class="prose">
+          <section class="recipe-header">
+            <div class="recipe-image">
+              {heroImage && <Image width={500} src={heroImage} alt="" />}
+            </div>
+
+            <div class="recipe-details">
+              <div class="date">
+                <FormattedDate date={pubDate} />
+                {updatedDate && (
+                  <div class="last-updated-on">
+                    Last updated on <FormattedDate date={updatedDate} />
+                  </div>
+                )}
+              </div>
+
+              <h2 class="recipe-title">{title}</h1>
+
+              {/* Tags under title */}
+              {normalizedTags.length > 0 && (
+                <ul class="tags" aria-label="Recipe tags">
+                  {normalizedTags.map((t) => (
+                    <li class="tag">{t}</li>
+                  ))}
+                </ul>
+              )}
+
+              {/* Consolidated summary: times made + time + servings */}
+              <div class="summary-row" aria-label="Recipe summary">
+                <span class="pill">
+                  <span class="meta-label">Made</span>
+                  <span class="pill-muted">{timesMade}x</span>
+                </span>
+
+                {metaPairs
+                  .filter(([, v]) => v !== undefined && v !== '')
+                  .map(([k, v]) => (
+                    <span class="pill">
+                      <span class="meta-label">{k}</span>
+                      <span class="pill-muted">{v}</span>
+                    </span>
+                  ))}
+              </div>
+            </div>
+          </section>
+
+          <hr class="divider" />
+
+          <slot />
+        </div>
+      </article>
+    </main>
+    <Footer />
+  </body>
+</html>

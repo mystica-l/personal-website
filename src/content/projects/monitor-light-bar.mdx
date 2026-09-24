@@ -1,0 +1,185 @@
+---
+title: 'Monitor Light Bar'
+description: 'Custom monitor light bar dupe of the BenQ ScreenBar Halo'
+pubDate: 'Jan 04 2026'
+heroImage: '../../assets/monitor-light-bar/mlb-hero.JPG'
+featured: true
+---
+
+import { Image } from 'astro:assets';
+import benqMonitorLightBar from '../../assets/monitor-light-bar/benq-monitor-light-bar.png';
+import benqAsymmetric from '../../assets/monitor-light-bar/benq-asymmetric.jpg';
+import monitorLightBar from '../../assets/monitor-light-bar/mlb-main.jpg';
+import esp32Housing from '../../assets/monitor-light-bar/mlb-esp32.jpg';
+import mlbAsymmetric from '../../assets/monitor-light-bar/mlb-asymmetric.jpg';
+import mlbClamp from '../../assets/monitor-light-bar/mlb-clamp.jpg';
+import mlbCenterCad from '../../assets/monitor-light-bar/mlb-center-cad.png';
+import mlbSidesCad from '../../assets/monitor-light-bar/mlb-sides-cad.png';
+import mlbCrossSectionCad from '../../assets/monitor-light-bar/mlb-cross-section-cad.png';
+import mlbCapCad from '../../assets/monitor-light-bar/mlb-cap-cad.png';
+import mlbClampCad from '../../assets/monitor-light-bar/mlb-clamp-cad.png';
+import mlbBackClampCad from '../../assets/monitor-light-bar/mlb-back-clamp-cad.png';
+import mlbBackClampCapCad from '../../assets/monitor-light-bar/mlb-back-clamp-cap-cad.png';
+
+## Inspiration
+
+I wanted a monitor light bar that would be able to light up my desk and my keyboard without
+taking much space. However, quality light bars with the features I wanted were too expensive
+for me. So instead, I decided to create a dupe of the one I wanted, the 
+[BenQ ScreenBar Halo](https://www.benq.com/en-us/lighting/monitor-light/screenbar-halo.html).
+<figure align="center">
+	<Image width="400" height="auto" src={benqMonitorLightBar} alt="BenQ ScreenBar Halo" />
+</figure>
+
+## The Design
+
+The main features I wanted in my light bar were:
+- Light across my desk and keyboard
+- The asymmetric light distribution for monitor glare
+<figure>
+	<Image width="400" height="auto" src={benqAsymmetric} alt="BenQ ScreenBar Halo Asymmetric Light Distribution" />
+</figure>
+- The ability to control the light bar with my keyboard
+- Biased lighting in the back of the light bar
+- A stable clamp that would not fall off my monitor
+
+The final light bar is combination of a 3D printed enclosure, a WS2812B LED strip for the lighting,
+an ESP32 for the controller, a 5V 8A power supply, a mirror for assymetric light distribution,
+a polycarbonate sheet for diffusion, and air dry clay for a stable clamp weight.
+
+Monitor Light Bar:
+<figure align="center">
+	<Image width="400" height="auto" src={monitorLightBar} alt="Monitor Light Bar" />
+</figure>
+ESP32 Housing:
+<figure align="center">
+	<Image width="400" height="auto" src={esp32Housing} alt="ESP32 Housing" />
+</figure>
+Assymetric Light Distribution Design:
+<figure align="center">
+	<Image width="400" height="auto" src={mlbAsymmetric} alt="Assymetric Light Distribution Design" />
+</figure>
+Back Clamp Weight:
+<figure align="center">
+	<Image width="400" height="auto" src={mlbClamp} alt="Back Clamp Weight" />
+</figure>
+
+### Bill of Materials
+[3.2 ft WS2812B LED Strip (144 LEDs/m)](https://www.amazon.com/dp/B09PBCPQ83?th=1) - $12.99<br/>
+[5v 8A 40W Power Supply](https://www.amazon.com/ALITOVE-Converter-Transformer-5-5x2-1mm-100V-240V/dp/B078RZBL8X?th=1) - $18.49<br/>
+[Power Jack Barrel Connector](https://www.amazon.com/California-JOS-Male-Female-2-1x5-5mm/dp/B0CR8TZ41W?th=1) - $3.97<br/>
+[1/2" x 5" Mirrors](https://www.amazon.com/dp/B08P2WQM4D) - $13.88<br/>
+[ESP32](https://www.microcenter.com/product/613822/inland-esp32-wroom-32d-module) - $9.99<br/>
+[1/32" Thick Polycarbonate Sheet](https://www.amazon.com/dp/B08SW564X3) - $9.99<br/>
+[Air Dry Clay](https://www.walmart.com/ip/Crayola-Air-Dry-Clay-White-2-5lb/14590620?classType=VARIANT&athbdg=L1300) - $6.67<br/>
+[Wooden Dowels](https://www.walmart.com/ip/Hello-Hobby-Wood-Dowel-36-Long-1-4-inch-Diameter-Blue-Ends/601171359) - $0.78<br/>
+[Rubber Feet](https://www.amazon.com/dp/B074C2XKXH?th=1) - $6.99<br/>
+Miscellaneous Wires, Screws - $5.00<br/>
+3D Printing - Already have access to a 3D printer<br/>
+Breadboard - Already had one<br/>
+Super Glue - Already had some<br/>
+Total Cost: $88.75
+
+## How it was Made
+I've included the STL files if you want to build this yourself, but please note this is a personal
+project and I didn't take the time to make the design easily manufacturable as I also
+used plenty of parts I already had laying around and don't have links to.
+
+### 3D Printed Enclosure
+I started with designing the 3D printed enclosure. I wanted the bar to be long enough
+and to rotate so I separated the project into two parts, the main bar, and everything else.
+The main bar I decided was going to be 20 inches long because that fit my monitor and also
+meant that 4 mirrors side by side would be 20 inches long as well.
+
+Because of the length and my 3D printer's size restrictions,
+I had to print the main bar into three pieces. 
+
+Monitor Light Bar Center and Sides:
+<div class="image-row">
+	<figure>
+	<Image width="400" height="auto" src={mlbCenterCad} alt="Monitor Light Bar Center" />
+    </figure>
+	<figure>
+        <Image width="400" height="auto" src={mlbSidesCad} alt="Monitor Light Bar Sides" />
+    </figure>
+</div>
+
+
+The center would be surrounded by 1 of each side totaling 20 inches. The center has a hole
+where the LEDs would route out of the bar to gain access to the ESP32 and power supply. Now for the inside of the main bar.
+
+Monitor Light Bar Cross Section:
+<figure align="center">
+	<Image width="400" height="auto" src={mlbCrossSectionCad} alt="Monitor Light Bar Cross Section" />
+</figure>
+
+You can see an overlayed picture I found of the BenQ ScreenBar Halo's cross section.
+I used this as a guide to get the same asymmetric light distribution.
+The main bar dimensions sported the following to adapt to the known size of parts I was using:
+- The width of the the channel for the mirrors is 1 inch allowing you to stack 2 mirrors.
+- The channel for the LED strip is the same width as the LED strip, 0.5 inches.
+- The channel for the polycarbonate sheet is arbitrary length but slightly more than 1/32" thick.
+- There are 0.27" holes for the 0.25" dowels to secure everything with super glue.
+- Additionally, there's a larger main channel to not take up space and allow the LED strip
+to route back around the end of the bar and back to the center to connect to the ESP32
+and power supply.
+- I also designed "caps" to hide the ends of the bar and allow for a cleaner look.
+Monitor Light Bar Cap:
+<figure align="center">
+	<Image src={mlbCapCad} alt="Monitor Light Bar Cap" />
+</figure>
+
+Once the main bar was designed and printed, I designed the combination clamp/ESP32 housing.
+I started with a snap on clamp that would hold the main bar to the monitor. 
+The clamp was designed with the tolerance to flex to insert the main bar but ensure it
+didn't fall. The main bar would then be able to rotate as needed.
+A hole was added so the extension of the mainbar that routed wires could pass through.
+The clamp also came with a lip to sit on the monitor.
+
+The ESP32 housing was then designed to be essentially an extension of the clamp.
+This housing would hold the ESP32 sitting on a breadboard and have a hole for USB cable
+access, a pressfit hole for the power jack, and a structure for the bias lighting to sit on.
+In addition, there was a an area to join a back clamp weight to ensure the clamp would not fall off the monitor.
+
+<figure align="center">
+	<Image width="400" height="auto" src={mlbClampCad} alt="Monitor Light Bar Clamp" />
+</figure>
+
+After that, I designed the final part that would clamp onto the back of the monitor.
+I wanted this to be heavy to ensure that the bar would not fall off the monitor.
+I decided to use air dry clay to fill the clamp and make it heavy and hollowed out the
+inside of the back clamp to accomplish this. I designed it to also pair with
+press fit caps to seal the clay.
+
+<div class="image-row">
+	<figure>
+	<Image width="400" height="auto" src={mlbBackClampCad} alt="Monitor Light Bar Back Clamp" />
+    </figure>
+	<figure>
+        <Image width="400" height="auto" src={mlbBackClampCapCad} alt="Monitor Light Bar Back Clamp Cap" />
+    </figure>
+</div>
+
+### Assembly
+1. Print all the parts
+2. Attach the 3 main bar pieces together with super glue and dowels
+3. Insert the mirrors into the main bar with super glue being careful to align them properly
+4. Peel the adhesive backing off the LED strip and insert it into the main bar. Only
+peel up to the point where the LED strip will be inserted. After that, route the LED strip
+back through the main bar and out the hole in the center of the main bar.
+5. Cut a piece of polycarbonate sheet to fit into the main bar and sand it. Sanding
+the polycarbonate sheet will help diffuse the light and make it more uniform. Insert the polycarbonate sheet into the main bar.
+6. Snapfit the main bar into the clamp and ensure it fits snugly and can rotate.
+7. Peel the adhesive backing off to stick it to the bias lighting structure.
+8. Attach an ESP32 to a breadboard and insert it into the housing.
+9. Wire the ESP32 to the LED strip and barrel jack. I used this guide: https://www.youtube.com/watch?v=exAWzMfmwQ8&t=368s
+Start at 5:30 and go until he shows you how to setup the barrel jack to power with the power supply.
+10. Pressfit the barrel jack into the housing.
+11. Fill the back clamp with air dry clay and pressfit the caps onto the back clamp.
+12. Attach the back clamp with an M4 screw and nut approximately 2.5 inches long.
+13. Super glue in the end caps to the main bar.
+
+### Software
+Software wise, with the assistance of ChatGPT, I was able to write a simple program
+to find my keyboard's HID and use that to connect to the ESP32 over BLE. My keyboard has tri-mode
+so I can switch back and forth between my laptop and my light bar.

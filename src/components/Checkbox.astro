@@ -1,0 +1,49 @@
+---
+// Checkbox.astro
+// Usage in Markdown:
+// <Checkbox label="2 cups flour" />
+
+type Props = {
+  label: string;
+  checked?: boolean;
+};
+
+const { label, checked = false } = Astro.props as Props;
+const id = `cb-${Math.random().toString(36).slice(2)}`;
+---
+
+<label class="recipe-checkbox" for={id}>
+  <input
+    id={id}
+    type="checkbox"
+    class="recipe-checkbox__input"
+    checked={checked}
+  />
+  <span class="recipe-checkbox__text">{label}</span>
+</label>
+
+<style>
+  .recipe-checkbox {
+    display: inline-grid;
+    grid-template-columns: 20px 1fr;
+    gap: 8px;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .recipe-checkbox__input {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+  }
+
+  .recipe-checkbox__text {
+    line-height: 1.35;
+  }
+
+  .recipe-checkbox:has(input:checked) .recipe-checkbox__text {
+    text-decoration: line-through;
+    opacity: 0.65;
+  }
+</style>
