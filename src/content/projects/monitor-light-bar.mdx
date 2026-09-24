@@ -83,8 +83,8 @@ Total Cost: $88.75
 ## How it was Made
 I've included the STL files if you want to build this yourself, but please note this is a personal
 project and I didn't take the time to make the design easily manufacturable as I also
-used plenty of parts I already had laying around and don't have links to.
-
+used plenty of parts I already had laying around and don't have links to.<br/>
+CAD and Software are linked here: https://github.com/mystica-l/monitor-light-bar
 ### 3D Printed Enclosure
 I started with designing the 3D printed enclosure. I wanted the bar to be long enough
 and to rotate so I separated the project into two parts, the main bar, and everything else.
@@ -126,7 +126,7 @@ and power supply.
 - I also designed "caps" to hide the ends of the bar and allow for a cleaner look.
 Monitor Light Bar Cap:
 <figure align="center">
-	<Image src={mlbCapCad} alt="Monitor Light Bar Cap" />
+	<Image width = "400" height="auto" src={mlbCapCad} alt="Monitor Light Bar Cap" />
 </figure>
 
 Once the main bar was designed and printed, I designed the combination clamp/ESP32 housing.
@@ -178,8 +178,12 @@ Start at 5:30 and go until he shows you how to setup the barrel jack to power wi
 11. Fill the back clamp with air dry clay and pressfit the caps onto the back clamp.
 12. Attach the back clamp with an M4 screw and nut approximately 2.5 inches long.
 13. Super glue in the end caps to the main bar.
+14. Attach rubber feet to the bottom of the clamp for extra grip.
 
 ### Software
 Software wise, with the assistance of ChatGPT, I was able to write a simple program
 to find my keyboard's HID and use that to connect to the ESP32 over BLE. My keyboard has tri-mode
 so I can switch back and forth between my laptop and my light bar.
+Code and installation instructions are linked on the repo: https://github.com/mystica-l/monitor-light-bar<br/>
+The software allows for adjustment of brightnes, color, and an on/off switch
+using the volume knob and arrow keys on my keyboard.
