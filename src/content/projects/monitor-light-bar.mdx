@@ -49,19 +49,19 @@ a polycarbonate sheet for diffusion, and air dry clay for a stable clamp weight.
 
 Monitor Light Bar:
 <figure align="center">
-	<Image width="400" height="auto" src={monitorLightBar} alt="Monitor Light Bar" />
+	<Image width="600" height="auto" src={monitorLightBar} alt="Monitor Light Bar" />
 </figure>
 ESP32 Housing:
 <figure align="center">
-	<Image width="400" height="auto" src={esp32Housing} alt="ESP32 Housing" />
+	<Image width="500" height="auto" src={esp32Housing} alt="ESP32 Housing" />
 </figure>
 Assymetric Light Distribution Design:
 <figure align="center">
-	<Image width="400" height="auto" src={mlbAsymmetric} alt="Assymetric Light Distribution Design" />
+	<Image width="500" height="auto" src={mlbAsymmetric} alt="Assymetric Light Distribution Design" />
 </figure>
 Back Clamp Weight:
 <figure align="center">
-	<Image width="400" height="auto" src={mlbClamp} alt="Back Clamp Weight" />
+	<Image width="500" height="auto" src={mlbClamp} alt="Back Clamp Weight" />
 </figure>
 
 ### Bill of Materials
@@ -97,10 +97,10 @@ I had to print the main bar into three pieces.
 Monitor Light Bar Center and Sides:
 <div class="image-row">
 	<figure>
-	<Image width="400" height="auto" src={mlbCenterCad} alt="Monitor Light Bar Center" />
+		<Image width="500" height="auto" src={mlbCenterCad} alt="Monitor Light Bar Center" />
     </figure>
 	<figure>
-        <Image width="400" height="auto" src={mlbSidesCad} alt="Monitor Light Bar Sides" />
+        <Image width="500" height="auto" src={mlbSidesCad} alt="Monitor Light Bar Sides" />
     </figure>
 </div>
 
@@ -110,7 +110,7 @@ where the LEDs would route out of the bar to gain access to the ESP32 and power 
 
 Monitor Light Bar Cross Section:
 <figure align="center">
-	<Image width="400" height="auto" src={mlbCrossSectionCad} alt="Monitor Light Bar Cross Section" />
+	<Image width="500" height="auto" src={mlbCrossSectionCad} alt="Monitor Light Bar Cross Section" />
 </figure>
 
 You can see an overlayed picture I found of the BenQ ScreenBar Halo's cross section.
@@ -126,7 +126,7 @@ and power supply.
 - I also designed "caps" to hide the ends of the bar and allow for a cleaner look.
 Monitor Light Bar Cap:
 <figure align="center">
-	<Image width = "400" height="auto" src={mlbCapCad} alt="Monitor Light Bar Cap" />
+	<Image width = "500" height="auto" src={mlbCapCad} alt="Monitor Light Bar Cap" />
 </figure>
 
 Once the main bar was designed and printed, I designed the combination clamp/ESP32 housing.
@@ -142,7 +142,7 @@ access, a pressfit hole for the power jack, and a structure for the bias lightin
 In addition, there was a an area to join a back clamp weight to ensure the clamp would not fall off the monitor.
 
 <figure align="center">
-	<Image width="400" height="auto" src={mlbClampCad} alt="Monitor Light Bar Clamp" />
+	<Image width="500" height="auto" src={mlbClampCad} alt="Monitor Light Bar Clamp" />
 </figure>
 
 After that, I designed the final part that would clamp onto the back of the monitor.
@@ -153,10 +153,10 @@ press fit caps to seal the clay.
 
 <div class="image-row">
 	<figure>
-	<Image width="400" height="auto" src={mlbBackClampCad} alt="Monitor Light Bar Back Clamp" />
+		<Image width="250" height="auto" src={mlbBackClampCad} alt="Monitor Light Bar Back Clamp" />
     </figure>
 	<figure>
-        <Image width="400" height="auto" src={mlbBackClampCapCad} alt="Monitor Light Bar Back Clamp Cap" />
+        <Image width="250" height="auto" src={mlbBackClampCapCad} alt="Monitor Light Bar Back Clamp Cap" />
     </figure>
 </div>
 
@@ -172,7 +172,8 @@ the polycarbonate sheet will help diffuse the light and make it more uniform. In
 6. Snapfit the main bar into the clamp and ensure it fits snugly and can rotate.
 7. Peel the adhesive backing off to stick it to the bias lighting structure.
 8. Attach an ESP32 to a breadboard and insert it into the housing.
-9. Wire the ESP32 to the LED strip and barrel jack. I used this guide: https://www.youtube.com/watch?v=exAWzMfmwQ8&t=368s
+9. Wire the ESP32 to the LED strip and barrel jack. I used this guide:<br/>
+https://www.youtube.com/watch?v=exAWzMfmwQ8&t=368s<br/>
 Start at 5:30 and go until he shows you how to setup the barrel jack to power with the power supply.
 10. Pressfit the barrel jack into the housing.
 11. Fill the back clamp with air dry clay and pressfit the caps onto the back clamp.
@@ -184,6 +185,7 @@ Start at 5:30 and go until he shows you how to setup the barrel jack to power wi
 Software wise, with the assistance of ChatGPT, I was able to write a simple program
 to find my keyboard's HID and use that to connect to the ESP32 over BLE. My keyboard has tri-mode
 so I can switch back and forth between my laptop and my light bar.
-Code and installation instructions are linked on the repo: https://github.com/mystica-l/monitor-light-bar<br/>
+Code and installation instructions are linked on the repo.<br/>
+https://github.com/mystica-l/monitor-light-bar<br/>
 The software allows for adjustment of brightnes, color, and an on/off switch
 using the volume knob and arrow keys on my keyboard.
